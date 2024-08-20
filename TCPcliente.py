@@ -1,13 +1,13 @@
 from socket import *
 
-serverName = 'localhost'
-serverPort = 1500
-clientSocket = socket(AF_INET, SOCK_STREAM)
-clientSocket.connect((serverName,serverPort))
-message = input('Escriba una frase en minúsculas:')
-clientSocket.send(message.encode())
+nombreServidor = 'localhost'
+puerto = 1500
+SocketCliente = socket(AF_INET, SOCK_STREAM)
+SocketCliente.connect((nombreServidor,puerto))
+mensaje = input('Escriba una frase en minúsculas:')
+SocketCliente.send(mensaje.encode())
 
-modifiedMessage = clientSocket.recv(2048)
-print(modifiedMessage.decode())
+mensajeModificado = SocketCliente.recv(2048)
+print(mensajeModificado.decode())
 
-clientSocket.close()
+SocketCliente.close()
