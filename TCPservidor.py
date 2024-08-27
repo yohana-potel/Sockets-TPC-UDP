@@ -15,6 +15,7 @@ print("El servidor está listo para recibir: ")
 while True:
     coneccionSocket, addr = SocketServidor.accept()
     mensaje = coneccionSocket.recv(2048).decode()
+    print(mensaje)
     mensajeModificado = mensaje.upper()
     coneccionSocket.send(mensajeModificado.encode())
     

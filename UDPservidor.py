@@ -9,4 +9,5 @@ print("El servidor está listo para recibir")
 while True:
     mensaje, direccionCliente = SocketServidor.recvfrom(2048)
     Mensaje = mensaje.decode().upper()
+    print(Mensaje)
     SocketServidor.sendto(Mensaje.encode(), direccionCliente)

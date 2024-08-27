@@ -1,4 +1,4 @@
-#Laboratorio 1 - Parte 1
+#Laboratorio 3 - Parte 1
 Desarrollo de un sistema simple cliente-servidor usando sockets UDP/TCP
 
 desarrollar un sistema cliente/servidor que realice la siguiente
