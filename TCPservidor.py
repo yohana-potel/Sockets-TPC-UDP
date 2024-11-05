@@ -50,7 +50,7 @@ try:
             conexionSocket.send(mensaje.upper().encode())
             conexionSocket.close()
         
-        except socket.timeout:
+        except TimeoutError:
             print("Timeout: No se recibió ninguna conexión en el tiempo especificado.")
         
 except OSError as e:

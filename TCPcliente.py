@@ -1,22 +1,20 @@
 import os
 import re
 from socket import *
+import time
 
-#variables de entorno
-
+# Variables de entorno
 nombreServidor = os.getenv('SERVER_HOST', 'localhost')
 puerto = int(os.getenv('SERVER_PORT', 1500))
 timeout = float(os.getenv('SOCKET_TIMEOUT', 10.0))
 
-#Socket Cliente
-
+# Socket Cliente
 try:
     SocketCliente = socket(AF_INET, SOCK_STREAM)
     SocketCliente.settimeout(timeout)  
 
     print(f"Conectando a {nombreServidor} en el puerto {puerto} con timeout de {timeout} segundos...")
     SocketCliente.connect((nombreServidor, puerto))
-
     while True:
         mensaje = input('Escriba una frase solo con letras minúsculas (o "salir" para terminar): ')
 
@@ -30,18 +28,18 @@ try:
             print("Error: El mensaje solo debe contener letras minúsculas sin espacios, números o caracteres especiales.")
             continue  
 
-        SocketCliente.send(mensaje.encode())
-        mensajeModificado = SocketCliente.recv(2048)
-        print(f"Mensaje modificado recibido: {mensajeModificado.decode()}")
+        # Esperar la respuesta
+        respuesta = SocketCliente.recv(2048)
+        tiempo_recepcion = time.time()
 
-   
+        
 except OSError as conexionAlServidor:
     print(f"Error de conexión al servidor: {conexionAlServidor}")
 
 except ValueError as usuario:
     print(f"Error en la entrada del usuario: {usuario}")
 
-except timeout:
+except TimeoutError:
     print("Timeout: No se recibió respuesta del servidor.")
 
 finally:
