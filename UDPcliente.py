@@ -3,7 +3,7 @@ import time
 
 nombre_servidor = 'localhost'
 puerto = 1500
-timeout = 1.0  
+timeout = 2.0  
 
 cliente_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 cliente_socket.settimeout(timeout)
@@ -13,13 +13,25 @@ paquetes_enviados = 0
 paquetes_recibidos = 0
 rtt_tiempos = []  
 
+def enviar_ping(cliente_socket, nombre_servidor, puerto, mensaje):
+    try:
+        tiempo_envio = time.time()
+        cliente_socket.sendto(mensaje.encode(), (nombre_servidor, puerto))
+        respuesta, _ = cliente_socket.recvfrom(1024)
+        tiempo_recepcion = time.time()
+        rtt = (tiempo_recepcion - tiempo_envio) * 1000  # RTT en milisegundos
+        return rtt, respuesta.decode()
+    except socket.timeout:
+        return None, None
+
+
 for i in range(1, 11):
     mensaje = f"PING {i}"
     try:
 
         tiempo_envio = time.time()
         cliente_socket.sendto(mensaje.encode(), (nombre_servidor, puerto))
-        print(f"Enviado: {mensaje}")
+        print(mensaje)
         paquetes_enviados += 1
 
         respuesta, _ = cliente_socket.recvfrom(1024)
@@ -29,7 +41,7 @@ for i in range(1, 11):
         rtt = (tiempo_recepcion - tiempo_envio) * 1000 
         rtt_tiempos.append(rtt)
         paquetes_recibidos += 1
-        print(f"Respuesta recibida: {respuesta.decode()} - RTT: {rtt:.2f} ms")
+        print(f"PONG {respuesta.decode()} - RTT: {rtt:.2f} ms")
 
     except socket.timeout:
         print(f"Tiempo de espera agotado para {mensaje} (paquete perdido)")
